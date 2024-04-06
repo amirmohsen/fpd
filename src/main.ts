@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
-import * as remoteMain from '@electron/remote/main';
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
+import setupHandlers from './handlers';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -13,8 +13,6 @@ const createWindow = () => {
     defaultHeight: 1000,
   });
 
-  remoteMain.initialize();
-
   const mainWindow = new BrowserWindow({
     x: mainWindowState.x,
     y: mainWindowState.y,
@@ -23,15 +21,12 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       plugins: true,
-      nodeIntegration: true,
-      contextIsolation: false,
       backgroundThrottling: false,
-      nativeWindowOpen: false,
-      webSecurity: false
+      webSecurity: false,
     },
   });
 
-  remoteMain.enable(window.webContents);
+  setupHandlers();
 
   mainWindowState.manage(mainWindow);
 

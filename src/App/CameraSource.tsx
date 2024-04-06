@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react';
-import { dialog } from 'electron';
 
 export function CameraSource() {
   const onClick = useCallback(async () => {
-    const inputDir = await dialog.showOpenDialog({
-      properties: ['openDirectory']
-    })
-    console.log(inputDir);
+    const { canceled, filePaths } = await fpd.showOpenDialog({
+      properties: ['openDirectory'],
+    });
+    console.log(canceled, filePaths);
   }, []);
-  return <button onClick={onClick}></button>;
+  return <button onClick={onClick}>Open directory</button>;
 }
