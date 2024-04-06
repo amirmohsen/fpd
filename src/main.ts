@@ -8,7 +8,7 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = () => {
-  let mainWindowState = windowStateKeeper({
+  const mainWindowState = windowStateKeeper({
     defaultWidth: 2000,
     defaultHeight: 1000,
   });
