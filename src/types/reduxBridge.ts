@@ -1,11 +1,11 @@
-import type { BrowserView, IpcMain, IpcRenderer } from 'electron';
+import type { BrowserWindow, IpcMain, IpcRenderer } from 'electron';
 import type { Store, AnyAction } from 'redux';
 
 export type MainReduxBridge = {
   <S extends Store>(
     ipcMain: IpcMain,
     store: S,
-    window: BrowserView,
+    window: BrowserWindow,
   ): { unsubscribe: () => void };
 };
 
