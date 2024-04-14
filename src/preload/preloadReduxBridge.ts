@@ -1,4 +1,4 @@
-import type { IpcRenderer } from 'electron';
+import type { IpcRenderer, IpcRendererEvent } from 'electron';
 import type { AnyAction } from 'redux';
 import {
   AnyState,
@@ -12,18 +12,15 @@ export const preloadReduxBridge: PreloadReduxBridge = <
 >(
   ipcRenderer: IpcRenderer,
 ): PreloadReduxBridgeReturn<S, A> => ({
-  handlers: {
-    dispatch: (action) => ipcRenderer.send('dispatch', action),
-    getState: () => ipcRenderer.invoke('getState'),
-    subscribe: (callback) => {
-      const subscription = (_: unknown, state: S) => {
-        console.log('received', _, state);
-        return callback(state);
-      };
-      ipcRenderer.on('subscribe', subscription);
-      return () => {
-        ipcRenderer.off('subscribe', subscription);
-      };
-    },
+  dispatch: (action) => ipcRenderer.send('dispatch', action),
+  getState: () => ipcRenderer.invoke('getState'),
+  subscribe: (callback) => {
+    const subscription = (event: IpcRendererEvent, state: S) => {
+      return callback(state);
+    };
+    ipcRenderer.on('subscribe', subscription);
+    return () => {
+      ipcRenderer.off('subscribe', subscription);
+    };
   },
 });

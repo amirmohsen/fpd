@@ -1,8 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
 import setupHandlers from './handlers';
-import './store';
+import { mainReduxBridge } from './mainReduxBridge';
+import { store } from '../shared/store';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -42,6 +43,10 @@ const createWindow = () => {
   if (process.env.NODE_ENV === 'development') {
     mainWindow.webContents.openDevTools();
   }
+
+  const { unsubscribe } = mainReduxBridge(ipcMain, store, mainWindow);
+
+  app.on('quit', unsubscribe);
 };
 
 app.on('ready', createWindow);

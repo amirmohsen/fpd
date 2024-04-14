@@ -7,7 +7,7 @@ import type {
 
 export type CreateUseStore = {
   <S extends AnyState, A extends AnyAction>(
-    bridge: PreloadReduxBridgeReturn<S, A>['handlers'],
+    bridge: PreloadReduxBridgeReturn<S, A>,
   ): UseBoundStore<StoreApi<Partial<S>>>;
 };
 
@@ -15,11 +15,10 @@ export const createUseStore: CreateUseStore = <
   S extends AnyState,
   A extends AnyAction,
 >(
-  bridge: PreloadReduxBridgeReturn<S, A>['handlers'],
+  bridge: PreloadReduxBridgeReturn<S, A>,
 ): UseBoundStore<StoreApi<Partial<S>>> =>
   create<Partial<S>>((setState) => {
     // subscribe to changes
-    console.log('subscribing to changes');
     bridge.subscribe(setState);
     // get initial state
     bridge.getState().then(setState);
