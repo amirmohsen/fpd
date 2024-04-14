@@ -1,1 +1,1 @@
-declare const fpd: typeof import('./apis').default;
+declare const fpd: typeof import('./preload/preloadApis').default;

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 export function CameraSource() {
   const onClick = useCallback(async () => {
-    const { canceled, filePaths } = await fpd.showOpenDialog({
+    const { canceled, filePaths } = await fpd.methods.showOpenDialog({
       properties: ['openDirectory'],
     });
     console.log(canceled, filePaths);

@@ -4,13 +4,13 @@ import {
   ipcRenderer,
 } from 'electron';
 
-const apis = {
+const methods = {
   invoke(...args: Parameters<typeof ipcRenderer.invoke>) {
     return ipcRenderer.invoke(...args);
   },
   showOpenDialog(options: OpenDialogOptions): Promise<OpenDialogReturnValue> {
-    return apis.invoke('showOpenDialog', options);
+    return methods.invoke('showOpenDialog', options);
   },
 };
 
-export default apis;
+export default methods;
